@@ -1,3 +1,6 @@
 ﻿imdb_actor_search/__pycache__
 tests/__pycache__
 .vscode
+imdb_actor_search.egg-info
+imdbsearch.egg-info
+imdbsearch/__pycache__

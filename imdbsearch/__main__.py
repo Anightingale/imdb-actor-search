@@ -1,6 +1,6 @@
 import sys
-from classmodule import MyClass
-from funcmodule import my_function
+from .classmodule import MyClass
+from .funcmodule import my_function
 
 """
 Command-line interface Tool:

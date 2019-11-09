@@ -1,6 +1,8 @@
-import sys
-from .classmodule import MyClass
-from .funcmodule import my_function
+from bs4 import BeautifulSoup
+import requests
+
+# from .classmodule import MyClass
+# from .funcmodule import my_function
 
 """
 Command-line interface Tool:
@@ -16,13 +18,25 @@ Command-line interface Tool:
 		a. Use a free CI/CD tool such as Travis/CircleCI"
 """
 def main():
-    print('in main')
-    args = sys.argv[1:]
-    print('count of args :: {}'.format(len(args)))
-    for arg in args:
-        print('passed argument :: {}'.format(arg))
-    my_function('hello world')
-    my_object = MyClass('Amy')
-    my_object.say_name()
+	
+	# download html contents of imdb page
+	imdbpage = requests.get("https://www.imdb.com/")
+
+	# starts with 2 if successful
+	print("status code: {}".format(imdbpage.status_code))
+
+	# use beautiful soup to parse document
+	soup = BeautifulSoup(imdbpage.content, 'html.parser')
+	print(soup.prettify())
+
+
+    actorname = input("Please enter actor\'s name: ")
+    print('length of name :: {}'.format(len(actorname)))
+    print("actor :: {}".format(actorname))
+
+    # my_function('hello world')
+    # my_object = MyClass('Amy')
+    # my_object.say_name()
+
 if __name__ == '__main__':
     main()

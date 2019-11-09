@@ -9,4 +9,6 @@ setup(
         'console_scripts': [
             'imdbsearch = imdbsearch.__main__:main'
         ]
-    })
+    },
+    install_requires=['beautifulsoup4', 'requests']
+)

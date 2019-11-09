@@ -2,8 +2,7 @@
 
 How to use imdb-actor-search cli
 1. Run the `install.sh` file in your command prompt. May need administrator permissions to run.
-2. Run imdb-actor-search program with
-    `imdbsearch $actor_name$`
+2. Run imdb-actor-search program with `imdbsearch`
 
 
 Python challenge for job application

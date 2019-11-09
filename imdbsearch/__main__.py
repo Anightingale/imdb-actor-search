@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import urllib.parse
 
 # from .classmodule import MyClass
 # from .funcmodule import my_function
@@ -19,20 +20,37 @@ Command-line interface Tool:
 """
 def main():
 	
+	actorname = input("Please enter actor\'s name: ")
+	# format for web address
+
+	print("actor :: {}".format(actorname))
+
+	# >>> import urllib.parse
+	# >>> query = 'Hellö Wörld@Python'
+	# >>> urllib.parse.quote(query)
+	# 'Hell%C3%B6%20W%C3%B6rld%40Python'
+
 	# download html contents of imdb page
-	imdbpage = requests.get("https://www.imdb.com/")
+
+	# link format for searching for actors of exact input name
+	# https://www.imdb.com/find?q=hugh%20jackman&s=nm&exact=true
+	# replace `space` with `%20`
+
+	actorname = urllib.parse.quote(actorname)
+
+	imdbpage = requests.get("https://www.imdb.com/find?q=" + actorname + "&s=nm&exact=true")
 
 	# starts with 2 if successful
 	print("status code: {}".format(imdbpage.status_code))
+	print("https://www.imdb.com/find?q=" + actorname + "&s=nm&exact=true")
 
 	# use beautiful soup to parse document
 	soup = BeautifulSoup(imdbpage.content, 'html.parser')
-	print(soup.prettify())
+	print(soup.find("tr a"))
 
 
-    actorname = input("Please enter actor\'s name: ")
-    print('length of name :: {}'.format(len(actorname)))
-    print("actor :: {}".format(actorname))
+	# each actor under that name is under that class 'findResult' which is elements of class 'findList'
+
 
     # my_function('hello world')
     # my_object = MyClass('Amy')

@@ -5,21 +5,9 @@ import urllib.parse
 from datetime import date
 import json
 
-# GLOBAL VARIABLES
-
-
 """
-Command-line interface Tool:
-	1. Queries IMDB
-	2. User enters movie star's name
-		a. If more than one actor has that name:
-			i. Return a menu for allowing selection of an individual based on available information
-	3. Prints the list of movies that the star has appeared in to screen
-		a. Default - Sorted in date order (oldest first)
-		b. Allow for reversal of order (newest first)
-	4. Allow option for sending result to a well-structured JSON document
-	5. Publish your new Python package to PyPi.org automatically from Github when a new tag is pushed 
-		a. Use a free CI/CD tool such as Travis/CircleCI"
+  Given a name, imbdsearch queries IMDB and returns a list of movies 
+  that individual has appeared in
 """
 def main():
 
@@ -48,6 +36,10 @@ def main():
 
 
 def exporttoJSON(actordict): 
+	"""
+	takes a dictionary of information about the actor 
+	and prints it to a JSON file 
+	"""
 	filename = '{}.json'.format(actordict['ActorName'].replace(' ','_'))
 	with open(filename, 'w') as outfile:
 		json.dump(actordict, outfile)
@@ -56,7 +48,10 @@ def exporttoJSON(actordict):
 	#TODO CLOSE FILE
 
 def getactormovies(actor, order): 
-	
+	"""
+	Given the actor, queries IMDB and returns a dictionary of information 
+	about the movies the individual has appeared in
+	"""
 	actorcode = actor.find('a')['href']
 	#href for actor's profile page comes in format /name/actorcode/ want to extract actorcode
 	actorcode = actorcode.split('/')[2]
@@ -99,7 +94,11 @@ def getactormovies(actor, order):
 
 
 def getactorinfo(inputname): 
-	
+	"""
+	Given the input from the user, queries IMDB for actors of that name
+	and allows user to select based on results 
+	"""
+
 	# get html contents of page when actors of exact name `actorname` is searched on imdb
 	inputname = urllib.parse.quote(inputname)
 	imdbpage = requests.get("https://www.imdb.com/find?q=" + inputname + "&s=nm&exact=true")

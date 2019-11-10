@@ -8,7 +8,7 @@ How to use imdb-actor-search cli
 Python challenge for job application
 
 Description:
-Write a command-line interface (CLI) tool that queries IMDB and allows a user to enter a movie star’s name and prints the list of movies that star has appeared in date order (oldest first) to the screen:
+Write a Command-line interface Tool (CLI) that queries IMDB and allows a user to enter a movie star’s name and prints the list of movies that star has appeared in date order (oldest first) to the screen:
 
 If more than one actor has that name, a menu should be returned allowing for selection of an individual based on available information
 

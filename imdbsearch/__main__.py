@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 import requests
 import urllib.parse
+from datetime import date
 
 # GLOBAL VARIABLES
 
@@ -22,32 +23,50 @@ Command-line interface Tool:
 def main():
 	
 	# make sure actor name exists
+	ascending = 0
 	actor = 0
 	while isinstance(actor, int):
 		inputname = input("Please enter actor\'s name: ")
 		actor = getactorinfo(inputname)
 
+	ascending = input("List sorted in ascending order? (y/n): ")
+
 	print("\nDisplaying movies from{}".format(actor.get_text()))
 
-	getactormovies(actor)
+	getactormovies(actor, ascending)
 
-def getactormovies(actor): 
 
-	profilepage = requests.get("https://www.imdb.com" + actor.find('a')['href'])
+def getactormovies(actor, ascending): 
 
-	print("https://www.imdb.com" + actor.find('a')['href'])
 
+	actorcode = actor.find('a')['href']
+	#href for actor's profile page comes in format /name/actorcode/ want to extract actorcode
+	actorcode = actorcode.split('/')[2]
+
+	if(ascending == 'y'):
+		ascending = ',asc'
+	else:
+		ascending = ''
+
+	#only want to show films the actor has already been featured in (not future films)
+	moviepage = requests.get(
+		"https://www.imdb.com/filmosearch/?explore=title_type&role={}&mode=simple&title_type=movie&sort=year{}&job_type=actor&release_date=%2C{}"
+		.format(actorcode, ascending, date.today().year))
+	
 	# use beautiful soup to parse document
-	soup = BeautifulSoup(profilepage.content, 'html.parser')
+	soup = BeautifulSoup(moviepage.content, 'html.parser')
 
 	# find each actor and their unique description
-	#movielist = soup.find_all(class_="filmo-category-section")
-	movielist = soup.select('b a')
+	movielist = soup.find_all("span","lister-item-header")
 
 	for movie in movielist:
-		print(movie.get_text())
+		try:
+			moviename = movie.find('a').text
+			movieyear = movie.find(class_="lister-item-year").text
+			print("{} {}".format(movieyear, moviename))
 
-	#profile: https://www.imdb.com/name/nm0413168/?ref_=fn_nm_nm_1
+		except AttributeError:
+			print("No movies exist")
 
 
 

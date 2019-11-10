@@ -45,7 +45,7 @@ def exporttoJSON(actordict):
 		json.dump(actordict, outfile)
 	
 	print("Exported as {}!".format(filename))
-	#TODO CLOSE FILE
+	outfile.close()
 
 def getactormovies(actor, order): 
 	"""
@@ -136,7 +136,6 @@ def getactorinfo(inputname):
 				numtodisplay= len(actorinfo)%numtodisplay
 			
 			if currdisplayed < len(actorinfo):
-				# TODO: REMOVE THIS LINE WHEN LOOPED AGAIN
 				print("press `enter` to see more...")
 
 			num = input()

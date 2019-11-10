@@ -5,7 +5,6 @@ import urllib.parse
 from datetime import date
 import json
 
-# GLOBAL VARIABLES
 
 def main():
 

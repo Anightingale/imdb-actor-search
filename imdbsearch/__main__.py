@@ -2,9 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import urllib.parse
 
-# from .classmodule import MyClass
-# from .funcmodule import my_function
-
 """
 Command-line interface Tool:
 	1. Queries IMDB
@@ -20,41 +17,40 @@ Command-line interface Tool:
 """
 def main():
 	
-	actorname = input("Please enter actor\'s name: ")
-	# format for web address
+	inputname = input("Please enter actor\'s name: ")
 
-	print("actor :: {}".format(actorname))
+	actor = getactorinfo(inputname)
 
-	# >>> import urllib.parse
-	# >>> query = 'Hellö Wörld@Python'
-	# >>> urllib.parse.quote(query)
-	# 'Hell%C3%B6%20W%C3%B6rld%40Python'
+	print("\nDisplaying movies from{}".format(actor.get_text()))
 
-	# download html contents of imdb page
 
-	# link format for searching for actors of exact input name
-	# https://www.imdb.com/find?q=hugh%20jackman&s=nm&exact=true
-	# replace `space` with `%20`
 
-	actorname = urllib.parse.quote(actorname)
+def getactorinfo(inputname): 
+	
+	# get html contents of page when actors of exact name `actorname` is searched on imdb
+	inputname= urllib.parse.quote(inputname)
+	imdbpage = requests.get("https://www.imdb.com/find?q=" + inputname + "&s=nm&exact=true")
 
-	imdbpage = requests.get("https://www.imdb.com/find?q=" + actorname + "&s=nm&exact=true")
-
-	# starts with 2 if successful
+	# starts with 2 if successful, 4 or 5 if not
 	print("status code: {}".format(imdbpage.status_code))
-	print("https://www.imdb.com/find?q=" + actorname + "&s=nm&exact=true")
 
 	# use beautiful soup to parse document
 	soup = BeautifulSoup(imdbpage.content, 'html.parser')
-	print(soup.find("tr a"))
 
+	# find each actor and their unique description
+	actorinfo = soup.find_all(class_='result_text')
+	
+	if(len(actorinfo) > 1):
+		# allow user to select an actor based on avalailable information
+		for i in range(len(actorinfo)):
+			
+			print("{}. {}".format(i+1, actorinfo[i].get_text()))
 
-	# each actor under that name is under that class 'findResult' which is elements of class 'findList'
+		num = int(input("\nWhich actor did you mean? Please insert number: "))
+		
+		return actorinfo[num-1]
 
+	else: 
+		# there is only 1 actor in search result
+		return actorinfo[0]
 
-    # my_function('hello world')
-    # my_object = MyClass('Amy')
-    # my_object.say_name()
-
-if __name__ == '__main__':
-    main()

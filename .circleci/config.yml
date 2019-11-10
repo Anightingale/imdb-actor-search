@@ -9,3 +9,27 @@ jobs:
       - run:
           command: |  # use pipenv to install dependencies
             sudo sh ./install.sh
+  deploy:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run:
+          name: install python dependencies
+          command: |  # use pipenv to install dependencies
+            sudo sh ./install.sh
+      - run:
+          name: init .pypirc
+          command: |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = anightingale" >> ~/.pypirc
+            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+      - run:
+          name: create packages
+          command: |
+            make package
+      - run:
+          name: upload to pypi
+          command: |
+            . venv/bin/activate
+            twine upload dist/*

@@ -5,3 +5,4 @@ imdb_actor_search.egg-info
 imdbsearch.egg-info
 imdbsearch/__pycache__
 *.json
+.pypirc
